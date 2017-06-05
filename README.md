@@ -3,6 +3,38 @@ Self-Driving Car Engineer Nanodegree Program
 
 ---
 
+## Model
+
+I used a simple kinematics model for this project, ignoring dynamics such as tire forces, gravity, and mass.  While a dynamics model accounts for more factors, the kinematics model is sufficient for this project.
+
+| State and Error Variables | Meaning |
+| -- | ------------- |
+| x | x position |
+| y | y position |
+| ψ | orientation angle |
+| v | velocity |
+| eψ  | error from desired orientation |
+| cte | cross track error |
+| Lf | distance between the front of the vehicle and its center of gravity |
+
+Kinematics Equations
+
+TODO
+
+## Timestep Length and Elapsed Duration (N & dt)
+
+TODO
+
+## Polynomial Fitting and MPC Preprocessing
+
+TODO
+
+## Model Predictive Control with Latency
+
+TODO
+
+---
+
 ## Dependencies
 
 * cmake >= 3.5
