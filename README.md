@@ -19,7 +19,14 @@ I used a simple kinematics model for this project, ignoring dynamics such as tir
 
 Kinematics Equations
 
-TODO
+### Motion Model
+![Kinematics Equations](https://github.com/mleonardallen/CarND-MPC-Project/blob/master/images/kinematics.png)
+
+### Cross Track Error
+![Cross Track Error](https://github.com/mleonardallen/CarND-MPC-Project/blob/master/images/cte.png)
+
+### Orientation Error
+![Orientation Error](https://github.com/mleonardallen/CarND-MPC-Project/blob/master/images/epsi.png)
 
 ## Timestep Length and Elapsed Duration (N & dt)
 
