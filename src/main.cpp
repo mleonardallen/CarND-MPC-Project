@@ -127,7 +127,7 @@ int main() {
           // Give the MPC state that vehicle will be in accounting for latency.
           // Future state calculated through kinematic equations.
           px = v * latency;
-          psi = - v * delta / Lf * latency;
+          psi = - (v / Lf) * delta * latency;
           double cte = polyeval(coeffs, px);
           double epsi = -atan(coeffs[1]);
 

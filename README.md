@@ -56,18 +56,17 @@ The predicted distance is also dependent on the velocity of the vehicle.  For in
 
 | N | dt | Result |
 | - | -- | ------ |
-| 5 | 0.05 | TODO |
-| 10 | 0.05 | TODO |
-| 15 | 0.05 | TODO |
-| 20 | 0.05 | TODO |
-| 5 | 0.1 | TODO |
-| 10 | 0.1 | TODO |
-| 15 | 0.1 | TODO |
-| 20 | 0.1 | TODO |
-| 5 | 0.15 | TODO |
-| 10 | 0.15 | TODO |
-| 15 | 0.15 | TODO |
-| 20 | 0.15 | TODO |
+| 5 | 0.05 | Vehicle jitters back and forth eventually driving erratically. |
+| 10 | 0.05 | Vehicle jitters back and forth eventually driving erratically. |
+| 15 | 0.05 | Vehicle jitters back and forth eventually driving erratically. |
+| 5 | 0.1 | Model underfits; vehicle veers off track. |
+| 10 | 0.1 | Model performs very well. |
+| 15 | 0.1 | Model overfits; vehicle mostly stays on track but swerves in places. |
+| 5 | 0.15 | Model underfits; vehicle veers off track. |
+| 10 | 0.15 | Vehicle mostly stays on track but swerves in places. |
+| 15 | 0.15 | Model overfits; vehicle mostly stays on track but swerves in places and touches yellow line. |
+
+Further tuning could potentially lead to good model results for many of these trial values.  For example perhaps the error weights just need adjusted.
 
 ## Polynomial Fitting and MPC Preprocessing
 
