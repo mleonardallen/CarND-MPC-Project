@@ -3,6 +3,10 @@ Self-Driving Car Engineer Nanodegree Program
 
 ---
 
+## Project Video
+
+[![Project Video](https://github.com/mleonardallen/CarND-MPC-Project/blob/master/images/capture.png)](https://youtu.be/qXTTggeUICk)
+
 ## Model
 
 I used a simple kinematics model for this project, ignoring dynamics such as tire forces, gravity, and mass.  While a dynamics model accounts for more factors, the kinematics model is sufficient for this project.
@@ -23,7 +27,7 @@ I used a simple kinematics model for this project, ignoring dynamics such as tir
 
 | Actuators | Meaning |
 | --------- | ------- |
-| δ (delta) | steering angle [] |
+| δ (delta) | steering angle |
 | a | acceleration [-1, 1], where negative values indicate braking. |
 
 The purpose of the MPC is to optimize these actuators in order to minimize error in following the desired trajectory.
@@ -57,11 +61,11 @@ The predicted distance is also dependent on the velocity of the vehicle.  For in
 | 5 | 0.1 | TODO |
 | 10 | 0.1 | TODO |
 | 15 | 0.1 | TODO |
-| 25 | 0.1 | TODO |
+| 20 | 0.1 | TODO |
 | 5 | 0.15 | TODO |
 | 10 | 0.15 | TODO |
 | 15 | 0.15 | TODO |
-| 25 | 0.15 | TODO |
+| 20 | 0.15 | TODO |
 
 ## Polynomial Fitting and MPC Preprocessing
 
