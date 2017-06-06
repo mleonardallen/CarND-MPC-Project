@@ -66,6 +66,8 @@ The predicted distance is also dependent on the velocity of the vehicle.  For in
 | 10 | 0.15 | Vehicle mostly stays on track but swerves in places. |
 | 15 | 0.15 | Model overfits; vehicle mostly stays on track but swerves in places and touches yellow line. |
 
+Final Values: `dt = 0.1`, `N = 10`.
+
 Further tuning could potentially lead to good model results for many of these trial values.  For example perhaps the error weights just need adjusted.
 
 ## Polynomial Fitting and MPC Preprocessing
