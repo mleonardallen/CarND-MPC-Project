@@ -11,7 +11,7 @@ Self-Driving Car Engineer Nanodegree Program
 
 I used a simple kinematics model for this project, ignoring dynamics such as tire forces, gravity, and mass.  While a dynamics model accounts for more factors, the kinematics model is sufficient for this project.
 
-### Variables and Equations
+### Variables
 
 | Kinematic Variables | Meaning |
 | -- | ------------- |
@@ -22,6 +22,8 @@ I used a simple kinematics model for this project, ignoring dynamics such as tir
 | eψ  | error from desired orientation |
 | cte | cross track error |
 | Lf | distance between the front of the vehicle and its center of gravity |
+
+### Update Equations
 
 ![Kinematics Equations](https://github.com/mleonardallen/CarND-MPC-Project/blob/master/images/kinematics.png)
 
