@@ -56,7 +56,7 @@ class FG_eval {
 
     // The part of the cost based on the reference state.
     for (int i = 0; i < N; i++) {
-      fg[0] += 1200 * CppAD::pow(vars[cte_start + i] - ref_cte, 2);
+      fg[0] += 1600 * CppAD::pow(vars[cte_start + i] - ref_cte, 2);
       fg[0] += 1200 * CppAD::pow(vars[epsi_start + i] - ref_epsi, 2);
       fg[0] += CppAD::pow(vars[v_start + i] - ref_v, 2);
     }
@@ -105,7 +105,7 @@ class FG_eval {
       AD<double> delta0 = vars[delta_start + i];
       AD<double> a0 = vars[a_start + i];
 
-      // From slack chat
+      // from slack conversation
       // AD<double> f0 = coeffs[0] + coeffs[1] * x0;
       // AD<double> psides0 = CppAD::atan(coeffs[1]);
       AD<double> f0 = coeffs[0] + coeffs[1] * x0 + coeffs[2] * x0 * x0 + coeffs[3] * x0 * x0 * x0;
@@ -116,7 +116,7 @@ class FG_eval {
       fg[2 + psi_start + i] = psi1 - (psi0 + v0 * delta0 / Lf * dt);
       fg[2 + v_start + i] = v1 - (v0 + a0 * dt);
       fg[2 + cte_start + i] = cte1 - ((f0 - y0) + (v0 * CppAD::sin(epsi0) * dt));
-      fg[2 + epsi_start + i] = epsi1 - ((psi0 - psides0) + v0 * delta0 / Lf * dt);
+      fg[2 + epsi_start + i] = epsi1 - ((psi0 - psides0) + (v0 / Lf) * delta0 * dt);
     }
   }
 };
@@ -128,10 +128,9 @@ class FG_eval {
 MPC::MPC() {}
 MPC::~MPC() {}
 
-bool MPC::Solve(
+vector<double> MPC::Solve(
   Eigen::VectorXd x0,
   Eigen::VectorXd coeffs,
-  vector<double>& actuators,
   vector<double>& mpc_x_vals,
   vector<double>& mpc_y_vals
 ) {
@@ -235,6 +234,7 @@ bool MPC::Solve(
   bool ok = true;
   ok &= solution.status == CppAD::ipopt::solve_result<Dvector>::success;
 
+  vector<double> actuators;
   if (ok) {
     actuators.push_back(solution.x[delta_start]);
     actuators.push_back(solution.x[a_start]);
@@ -242,11 +242,11 @@ bool MPC::Solve(
     actuators.push_back(0.0);
     actuators.push_back(0.0);
   }
-  
+
   for(int i = 0; i < N - 1; i++) {
     mpc_x_vals.push_back(solution.x[x_start + 1 + i]);
     mpc_y_vals.push_back(solution.x[y_start + 1 + i]);
   }
 
-  return ok;
+  return actuators;  
 }

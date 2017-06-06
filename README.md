@@ -7,7 +7,9 @@ Self-Driving Car Engineer Nanodegree Program
 
 I used a simple kinematics model for this project, ignoring dynamics such as tire forces, gravity, and mass.  While a dynamics model accounts for more factors, the kinematics model is sufficient for this project.
 
-| State and Error Variables | Meaning |
+### Variables and Equations
+
+| Kinematic Variables | Meaning |
 | -- | ------------- |
 | x | x position |
 | y | y position |
@@ -17,28 +19,70 @@ I used a simple kinematics model for this project, ignoring dynamics such as tir
 | cte | cross track error |
 | Lf | distance between the front of the vehicle and its center of gravity |
 
-Kinematics Equations
-
-### Motion Model
 ![Kinematics Equations](https://github.com/mleonardallen/CarND-MPC-Project/blob/master/images/kinematics.png)
 
+| Actuators | Meaning |
+| --------- | ------- |
+| δ (delta) | steering angle [] |
+| a | acceleration [-1, 1], where negative values indicate braking. |
+
+The purpose of the MPC is to optimize these actuators in order to minimize error in following the desired trajectory.
+
 ### Cross Track Error
+
+The difference between the desired track and the vehicle position.
+
 ![Cross Track Error](https://github.com/mleonardallen/CarND-MPC-Project/blob/master/images/cte.png)
 
 ### Orientation Error
+
+The difference between the desired orientation and the vehicle orientation.
+
 ![Orientation Error](https://github.com/mleonardallen/CarND-MPC-Project/blob/master/images/epsi.png)
 
 ## Timestep Length and Elapsed Duration (N & dt)
 
-TODO
+I found that the predicted distance covered `N * dt` should be approximately the same as given waypoints, but should not exceed the total length of the given waypoints.  When exceeding the waypoint distance, If found the MPC tends to overfit and provide erratic trajectories.  In contrast if the predicted distance making the car swerve a lot in response to the changing environment.
+
+The predicted distance is also dependent on the velocity of the vehicle.  For instance N * dt at `v = 60` covers more distance than at `v = 40`.  At higher speeds, dt is should be reduced since the car is covering more distance and therefore will need to more quickly adjust position.
+
+### Trial Values 
+
+| N | dt | Result |
+| - | -- | ------ |
+| 5 | 0.05 | TODO |
+| 10 | 0.05 | TODO |
+| 15 | 0.05 | TODO |
+| 20 | 0.05 | TODO |
+| 5 | 0.1 | TODO |
+| 10 | 0.1 | TODO |
+| 15 | 0.1 | TODO |
+| 25 | 0.1 | TODO |
+| 5 | 0.15 | TODO |
+| 10 | 0.15 | TODO |
+| 15 | 0.15 | TODO |
+| 25 | 0.15 | TODO |
 
 ## Polynomial Fitting and MPC Preprocessing
 
-TODO
+Before fitting a polynomial to the desired waypoints, I first translate and transorm the waypoints to the car's perspective by applying a [Rotation Matrix](https://en.wikipedia.org/wiki/Rotation_matrix), and a 3rd order polynomial is then fit against the transformed waypoints.
+
+With the polynomial coefficients, the initial state is calculated to be handed off along with the polynomial coefficients to the MPC procedure.
+
+| Initial State (without latency considered) | Description |
+| ------------- | ----------- |
+| x | `0` due to transform |
+| y | `0` due to transform | 
+| ψ | `0` due to transform |
+| v | velocity reported by server | 
+| cte | cross track error calculated by evaluating polynomial at `x = 0` |
+| eψ | the difference between the desired orientation and the vehicle orientation at `x = 0` |
 
 ## Model Predictive Control with Latency
 
-TODO
+Latency is the delay between sending a steering command and when vehicle actuators perform the command.  To account for latency, I predict the state of the vehicle after the latency period.  This is used as the initial state for the MPC procedure instead of the current state.  For example, the kinematics equations are used to determine the new initial `x position` with `dt = latency`.  See latency code: https://github.com/mleonardallen/CarND-MPC-Project/blob/master/src/main.cpp#L127-L132
+
+![x at t+1](https://github.com/mleonardallen/CarND-MPC-Project/blob/master/images/xt+1.png)
 
 ---
 

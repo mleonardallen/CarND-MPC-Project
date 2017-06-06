@@ -12,6 +12,9 @@
 // for convenience
 using json = nlohmann::json;
 
+const double latency = 0.1; // 100 ms
+const double Lf = 2.67;
+
 // For converting back and forth between radians and degrees.
 constexpr double pi() { return M_PI; }
 double deg2rad(double x) { return x * pi() / 180; }
@@ -94,6 +97,7 @@ int main() {
           double py = j[1]["y"];
           double psi = j[1]["psi"];
           double v = j[1]["speed"];
+          double delta = j[1]["steering_angle"];
 
           Eigen::VectorXd ptsx(ptsx_global.size());
           Eigen::VectorXd ptsy(ptsy_global.size());
@@ -107,9 +111,10 @@ int main() {
             // convert to eigen vector for polyfit
             ptsx[i] = ptsx_global[i];
             ptsy[i] = ptsy_global[i];
-            // convert to car coordinates
+            // translate to car origin
             double origin_x = ptsx[i]-px;
             double origin_y = ptsy[i]-py;
+            // rotate https://en.wikipedia.org/wiki/Rotation_matrix
             ptsx[i] = origin_x * cos(psi) + origin_y * sin(psi);
             ptsy[i] = origin_y * cos(psi) - origin_x * sin(psi);
             // waypoints/reference
@@ -118,22 +123,24 @@ int main() {
           }
 
           auto coeffs = polyfit(ptsx, ptsy, 3);
-          double cte = polyeval(coeffs, 0);
-          double epsi = atan(coeffs[1]);
+
+          // Give the MPC state that vehicle will be in accounting for latency.
+          // Future state calculated through kinematic equations.
+          px = v * latency;
+          psi = - v * delta / Lf * latency;
+          double cte = polyeval(coeffs, px);
+          double epsi = -atan(coeffs[1]);
 
           Eigen::VectorXd state(6);
-          state << 0.0, 0.0, 0.0, v, cte, epsi;
+          state << px, 0, psi, v, cte, epsi;      
 
           //Calculate steering value and throttle with MPC
           vector<double> actuators;
-
-
-          bool success = mpc.Solve(state, coeffs, actuators, mpc_x_vals, mpc_y_vals);
+          actuators = mpc.Solve(state, coeffs, mpc_x_vals, mpc_y_vals);
 
           json msgJson;
           msgJson["steering_angle"] = -actuators[0];
           msgJson["throttle"] = actuators[1];
-
           //Display the MPC predicted trajectory 
           msgJson["mpc_x"] = mpc_x_vals;
           msgJson["mpc_y"] = mpc_y_vals;

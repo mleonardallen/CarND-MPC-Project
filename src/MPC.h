@@ -14,10 +14,9 @@ class MPC {
 
   // Solve the model given an initial state and polynomial coefficients.
   // Return if Ipopt succeeded in solving
-  bool Solve(
+  vector<double> Solve(
     Eigen::VectorXd state,
     Eigen::VectorXd coeffs,
-    vector<double>& actuators,
     vector<double>& mpc_x_vals,
     vector<double>& mpc_y_vals
   );
